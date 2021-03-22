@@ -1,6 +1,6 @@
 # SQL
 SQL Hackerrank solutions
-- basic select
+- basic select ✅
 - advanced select 
 - aggregation
 - basic join 
