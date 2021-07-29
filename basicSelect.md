@@ -54,16 +54,20 @@ SELECT * FROM (SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) DESC
 ```  
 
 Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION. Your result cannot contain duplicates.  
+```SELECT DISTINCT CITY FROM STATION WHERE REGEXP_LIKE(UPPER(CITY), '^[AEIOU]');```  
+OR  
 ```SELECT DISTINCT CITY FROM STATION WHERE UPPER(SUBSTR(CITY, 1, 1)) IN ('A','E','I','O','U');```  
 
 Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.  
+```SELECT DISTINCT CITY FROM STATION WHERE REGEXP_LIKE(UPPER(CITY), '[AEIOU]$');```   
+OR  
 ```SELECT DISTINCT CITY FROM STATION WHERE UPPER(SUBSTR(CITY,-1,1)) IN ('A','E','I','O','U');```
   
 Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates.  
 ```
 SELECT DISTINCT CITY FROM STATION WHERE UPPER(SUBSTR(CITY,1,1)) IN ('A','E','I','O','U') AND UPPER(SUBSTR(CITY,-1,1)) IN ('A','E','I','O','U');
 ```  
-OR
+OR  
 ```SELECT DISTINCT CITY FROM STATION WHERE REGEXP_LIKE(CITY, '^[AEIOU].*[aeiou]$');```  
 
 Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain duplicates.  
@@ -73,10 +77,10 @@ Query the list of CITY names from STATION that do not end with vowels. Your resu
 ```SELECT DISTINCT CITY FROM STATION WHERE REGEXP_LIKE(CITY,'[^aeiou]$');```
   
 Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates. 
-```SELECT DISTINCT CITY FROM STATION WHERE REGEXP_LIKE(CITY,'^[^AEIOU]|[^aeiou]$');```  
+```SELECT DISTINCT CITY FROM STATION WHERE REGEXP_LIKE(UPPER(CITY), '^[^AEIOU]|[^AEIOU]$');```  
   
 Query the list of CITY names from STATION that do not start with vowels and do not end with vowels. Your result cannot contain duplicates.  
-```SELECT DISTINCT CITY FROM STATION WHERE REGEXP_LIKE(CITY,'^[^AEIOU].*[^aeiou]$');```
+```SELECT DISTINCT CITY FROM STATION WHERE REGEXP_LIKE(UPPER(CITY), '^[^AEIOU].*[^AEIOU]$');```
 
 
 ###### STUDENTS 
