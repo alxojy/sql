@@ -107,3 +107,23 @@ Output
 ```
 
 3. Perform order by to sort names & get expected result.
+  
+###### BST 
+| Column | Type  |
+|-------|-------|
+N       | Integer
+P       | Integer
+  
+Write a query to find the node type of Binary Tree ordered by the value of the node. Output one of the following for each node:  
+Root: If node is root node.  
+Leaf: If node is leaf node.  
+Inner: If node is neither root nor leaf node.  
+  
+```
+SELECT A.N, 
+    CASE WHEN A.P IS NULL THEN 'Root'
+         WHEN (SELECT COUNT(*) FROM BST B WHERE A.N = B.P) > 0 THEN 'Inner'
+         ELSE 'Leaf'
+    END
+FROM BST A ORDER BY A.N;
+```
