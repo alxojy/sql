@@ -31,7 +31,7 @@ FROM TRIANGLES;
 Name       | String
 Occupation | String
 
-Generate the following two result sets:
+A. Generate the following two result sets:
 1. Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
 2. Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occurrences in ascending order, and output them in the following format:    
 ```There are a total of [occupation_count] [occupation]s.```   
@@ -41,3 +41,69 @@ Note: There will be at least two entries in the table for each type of occupatio
 SELECT NAME || '(' || SUBSTR(OCCUPATION,1,1) || ')' FROM OCCUPATIONS ORDER BY NAME;
 SELECT 'There are a total of ' || COUNT(OCCUPATION) || ' ' || LOWER(OCCUPATION) || 's.' FROM OCCUPATIONS GROUP BY OCCUPATION ORDER BY COUNT(OCCUPATION), OCCUPATION;
 ```
+    
+B. Pivot the Occupation column in OCCUPATIONS so that each Name is sorted alphabetically and displayed underneath its corresponding Occupation. The output column headers should be Doctor, Professor, Singer, and Actor, respectively.
+Note: Print NULL when there are no more names corresponding to an occupation.  
+
+###### Sample Input
+| Name    | Occupation  |
+|----------|-------|
+Samantha | Doctor
+Julia | Actor
+Maria | Actor
+Meera | Singer
+Ashley | Professor
+Ketty | Professor
+Christeen | Professor
+Jane | Actor
+Jenny | Doctor
+Priya | Singer
+  
+###### Sample Output
+```
+Jenny Ashley Meera Jane
+Samantha Christeen Priya Julia
+NULL Ketty NULL Maria
+```
+  
+```
+SELECT Doctor, Professor, Singer, Actor FROM (
+    SELECT NAME, OCCUPATION, ROW_NUMBER() OVER (PARTITION BY OCCUPATION ORDER BY NAME) FROM Occupations) 
+        PIVOT (MAX(NAME) FOR OCCUPATION IN ('Doctor' as Doctor, 'Professor' as Professor, 'Singer' as Singer, 'Actor' as Actor)
+   ) 
+ORDER BY Doctor, Professor, Singer, Actor;
+```
+
+Explanation
+1. Partition names based on occupation, sort names and assign row number.  
+```SELECT NAME, OCCUPATION, ROW_NUMBER() OVER (PARTITION BY OCCUPATION ORDER BY NAME) FROM Occupations```  
+  
+Output  
+```
+Jane Actor 1
+Julia Actor 2
+Maria Actor 3
+Jenny Doctor 1
+Samantha Doctor 2
+Ashley Professor 1
+Christeen Professor 2
+Ketty Professor 3
+Meera Singer 1
+Priya Singer 2
+```
+  
+2. For each row value, select name for the occupation.
+```
+SELECT Doctor, Professor, Singer, Actor FROM (
+    SELECT NAME, OCCUPATION, ROW_NUMBER() OVER (PARTITION BY OCCUPATION ORDER BY NAME) FROM Occupations) 
+        PIVOT (MAX(NAME) FOR OCCUPATION IN ('Doctor' as Doctor, 'Professor' as Professor, 'Singer' as Singer, 'Actor' as Actor)
+   ) 
+```
+Output  
+```
+1. Jenny Ashley Meera Jane
+3. NULL Ketty NULL Maria
+2. Samantha Christeen Priya Julia
+```
+
+3. Perform order by to sort names & get expected result.
