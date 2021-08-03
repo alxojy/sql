@@ -97,7 +97,18 @@ Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 3
 Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) in STATION is greater than 38.7780. Round your answer to 4 decimal places.  
 ```SELECT ROUND(LONG_W, 4) FROM STATION WHERE LAT_N = (SELECT MIN(LAT_N) FROM STATION WHERE LAT_N > 38.7880);```
   
+Query the Manhattan distance to the nearest 4 decimal places, where x1: minimum LAT_N, x2: maximum LAT_N, y1: minimum LONG_W, y2: maximum LONG_W     
+```SELECT ROUND(ABS(MIN(LAT_N)-MAX(LAT_N)) + ABS(MIN(LONG_W)-MAX(LONG_W)), 4) FROM STATION;```
 
-
-
+Query the Euclidean distance to the nearest 4 decimal places.  
+```
+SELECT ROUND(
+        SQRT(POWER((MAX(LAT_N)-MIN(LAT_N)), 2) + 
+             POWER((MAX(LONG_W)-MIN(LONG_W)), 2)
+        ), 4) 
+FROM STATION;
+```
+  
+Query the median of the Northern Latitudes (LAT_N) from STATION and round your answer to 4 decimal places.  
+```SELECT ROUND(MEDIAN(LAT_N), 4) FROM STATION;```
   
