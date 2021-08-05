@@ -49,4 +49,35 @@ FROM STUDENTS S, GRADES G WHERE S.MARKS BETWEEN G.MIN_MARK AND G.MAX_MARK
 ORDER BY G.GRADE DESC, S.NAME;
 ```
   
+###### HACKERS 
+| Column | Type |
+|--------------|------------|
+hacker_id  | Integer
+name | String
+  
+###### DIFFICULTY 
+| Column | Type |
+|--------------|------------|
+difficulty_level | Integer
+score | Integer
+  
+###### CHALLENGES 
+| Column | Type |
+|--------------|------------|
+challenge_id  | Integer
+hacker_id  | Integer
+difficulty_level | Integer
+  
+###### SUBMISSIONS 
+| Column | Type |
+|--------------|------------|
+submission_id  | Integer
+hacker_id  | Integer
+challenge_id  | Integer
+score | Integer
+  
+Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard! Write a query to print the respective hacker_id and name of hackers who achieved full scores for more than one challenge. Order your output in descending order by the total number of challenges in which the hacker earned a full score. If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.  
+
+
+  
 
