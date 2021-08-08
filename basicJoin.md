@@ -85,6 +85,32 @@ INNER JOIN DIFFICULTY D ON C.DIFFICULTY_LEVEL = D.DIFFICULTY_LEVEL AND S.SCORE =
 INNER JOIN HACKERS H ON S.HACKER_ID = H.HACKER_ID
 GROUP BY H.HACKER_ID, H.NAME HAVING COUNT(*) > 1 ORDER BY COUNT(*) DESC, H.HACKER_ID;
 ```
+  
+###### CITY 
+| Field       | Type |
+|--------------|------------|
+id          | integer
+code        | integer
+coins_needed | integer
+power    | integer
+  
+###### WANDS_PROPERTY 
+| Field       | Type |
+|--------------|------------|
+code        | integer
+age        | integer
+is_evil | integer
+  
+Hermione decides the best way to choose is by determining the minimum number of gold galleons needed to buy each non-evil wand of high power and age. Write a query to print the id, age, coins_needed, and power of the wands that Ron's interested in, sorted in order of descending power. If more than one wand has same power, sort the result in order of descending age.  
+```
+SELECT W.ID, WP.AGE, W.COINS_NEEDED, W.POWER FROM WANDS W
+INNER JOIN (SELECT CODE, POWER, MIN(COINS_NEEDED) AS COINS_NEEDED FROM WANDS GROUP BY CODE, POWER) M ON M.COINS_NEEDED = W.COINS_NEEDED AND M.CODE = W.CODE AND M.POWER = W.POWER 
+INNER JOIN WANDS_PROPERTY WP ON W.CODE = WP.CODE
+WHERE WP.IS_EVIL = 0
+ORDER BY W.POWER DESC, WP.AGE DESC;
+```
+  
 
+  
   
 
