@@ -102,6 +102,7 @@ age        | integer
 is_evil | integer
   
 Hermione decides the best way to choose is by determining the minimum number of gold galleons needed to buy each non-evil wand of high power and age. Write a query to print the id, age, coins_needed, and power of the wands that Ron's interested in, sorted in order of descending power. If more than one wand has same power, sort the result in order of descending age.  
+  
 ```
 SELECT W.ID, WP.AGE, W.COINS_NEEDED, W.POWER FROM WANDS W
 INNER JOIN (SELECT CODE, POWER, MIN(COINS_NEEDED) AS COINS_NEEDED FROM WANDS GROUP BY CODE, POWER) M ON M.COINS_NEEDED = W.COINS_NEEDED AND M.CODE = W.CODE AND M.POWER = W.POWER 
@@ -110,7 +111,30 @@ WHERE WP.IS_EVIL = 0
 ORDER BY W.POWER DESC, WP.AGE DESC;
 ```
   
-
+###### HACKERS 
+| Field       | Type |
+|--------------|------------|
+hacker_id          | integer
+name        | string
+  
+###### CHALLENGES 
+| Field       | Type |
+|--------------|------------|
+challenge_id        | integer
+hacker_id          | integer
+  
+Julia asked her students to create some coding challenges. Write a query to print the hacker_id, name, and the total number of challenges created by each student. Sort your results by the total number of challenges in descending order. If more than one student created the same number of challenges, then sort the result by hacker_id. If more than one student created the same number of challenges and the count is less than the maximum number of challenges created, then exclude those students from the result.  
+  
+```
+SELECT H.HACKER_ID, H.NAME, COUNT(*) AS TOTAL FROM HACKERS H 
+INNER JOIN CHALLENGES C ON H.HACKER_ID = C.HACKER_ID
+GROUP BY H.HACKER_ID, H.NAME
+HAVING COUNT(*) = (SELECT MAX(COUNT(*)) FROM CHALLENGES C GROUP BY C.HACKER_ID) OR
+COUNT(*) IN (SELECT * FROM 
+             (SELECT COUNT(*) AS CNT FROM CHALLENGES C GROUP BY C.HACKER_ID) 
+             GROUP BY CNT HAVING COUNT(*) = 1)
+ORDER BY TOTAL DESC, H.HACKER_ID;
+```
   
   
 
