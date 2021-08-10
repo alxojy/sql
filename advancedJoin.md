@@ -37,3 +37,14 @@ Friend_ID        | Integer
 |--------------|------------|
 ID          | Integer
 Salary        | Integer
+  
+Write a query to output the names of those students whose best friends got offered a higher salary than them. Names must be ordered by the salary amount offered to the best friends. It is guaranteed that no two students got same salary offer.  
+  
+```
+SELECT S.NAME FROM FRIENDS F 
+INNER JOIN PACKAGES P1 ON F.ID = P1.ID
+INNER JOIN PACKAGES P2 ON F.FRIEND_ID = P2.ID
+INNER JOIN STUDENTS S ON F.ID = S.ID
+WHERE P2.SALARY > P1.SALARY
+ORDER BY P2.SALARY;
+```
