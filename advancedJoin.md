@@ -1,7 +1,7 @@
 ** all solutions are in Oracle
-#### ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) AGGREGATION
+#### ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) ADVANCED JOIN
   
-###### CITY 
+###### PROJECTS 
 | Field       | Type |
 |--------------|------------|
 Task_id          | Integer
@@ -19,3 +19,21 @@ where a.start_date < b.end_date
 group by a.start_date
 order by to_date(min(b.end_date), 'yyyy-mm-dd') - to_date(a.start_date, 'yyyy-mm-dd'), to_date(a.start_date, 'yyyy-mm-dd');
 ```
+  
+###### STUDENTS 
+| Field       | Type |
+|--------------|------------|
+ID          | Integer
+Name        | String
+  
+###### FRIENDS 
+| Field       | Type |
+|--------------|------------|
+ID          | Integer
+Friend_ID        | Integer
+  
+###### PACKAGES 
+| Field       | Type |
+|--------------|------------|
+ID          | Integer
+Salary        | Integer
