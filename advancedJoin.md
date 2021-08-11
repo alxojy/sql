@@ -66,3 +66,62 @@ UNION
  WHERE F1.X <> F1.Y AND F1.X = F2.Y AND F1.Y = F2.X AND F1.X < F1.Y)
 ORDER BY X, Y;
 ```
+  
+###### CONTESTS 
+| Field       | Type |
+|--------------|------------|
+contest_id         | Integer
+hacker_id        | Integer
+name | String
+  
+###### COLLEGES 
+| Field       | Type |
+|--------------|------------|
+college_id          | Integer
+contest_id        | Integer
+  
+###### CHALLENGES 
+| Field       | Type |
+|--------------|------------|
+challenge_id          | Integer
+college_id        | Integer
+  
+###### VIEW_STATS 
+| Field       | Type |
+|--------------|------------|
+challenge_id          | Integer
+total_views        | Integer
+total_unique_views        | Integer
+  
+###### SUBMISSION_STATS 
+| Field       | Type |
+|--------------|------------|
+challenge_id          | Integer
+total_submissions        | Integer
+total_unique_submissions        | Integer
+  
+Samantha interviews many candidates from different colleges using coding challenges and contests. Write a query to print the contest_id, hacker_id, name, and the sums of total_submissions, total_accepted_submissions, total_views, and total_unique_views for each contest sorted by contest_id. Exclude the contest from the result if all four sums are 0.  
+Note: A specific contest can be used to screen candidates at more than one college, but each college only holds 1 screening contest.  
+  
+```
+select con.contest_id, con.hacker_id, con.name, 
+sum(s.total_submissions), sum(s.total_accepted_submissions), 
+sum(v.total_views), sum(v.total_unique_views)
+from contests con
+inner join colleges col on con.contest_id = col.contest_id
+inner join challenges chal on col.college_id = chal.college_id
+left join (select challenge_id, sum(total_views) as total_views, 
+           sum(total_unique_views) as total_unique_views 
+           from view_stats group by challenge_id) v 
+           on chal.challenge_id = v.challenge_id
+left join (select challenge_id, sum(total_submissions) as total_submissions,
+           sum(total_accepted_submissions) as total_accepted_submissions 
+           from submission_stats group by challenge_id) s 
+           on chal.challenge_id = s.challenge_id
+group by con.contest_id, con.hacker_id, con.name
+having sum(v.total_views) + 
+       sum(v.total_unique_views) + 
+       sum(s.total_submissions) + 
+       sum(s.total_accepted_submissions) > 0
+order by con.contest_id;
+```
