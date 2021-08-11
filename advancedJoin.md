@@ -48,3 +48,21 @@ INNER JOIN STUDENTS S ON F.ID = S.ID
 WHERE P2.SALARY > P1.SALARY
 ORDER BY P2.SALARY;
 ```
+  
+###### FUNCTIONS 
+| Field       | Type |
+|--------------|------------|
+X          | Integer
+Y        | Integer
+  
+Two pairs (X1, Y1) and (X2, Y2) are said to be symmetric pairs if X1 = Y2 and X2 = Y1.  
+Write a query to output all such symmetric pairs in ascending order by the value of X. List the rows such that X1 ≤ Y1.  
+  
+```
+SELECT X, Y FROM 
+(SELECT X,Y FROM FUNCTIONS WHERE X=Y GROUP BY X,Y HAVING COUNT(*) > 1)
+UNION
+(SELECT F1.X AS X, F1.Y AS Y FROM FUNCTIONS F1, FUNCTIONS F2 
+ WHERE F1.X <> F1.Y AND F1.X = F2.Y AND F1.Y = F2.X AND F1.X < F1.Y)
+ORDER BY X, Y;
+```
