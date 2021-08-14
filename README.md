@@ -3,6 +3,6 @@ SQL Hackerrank solutions
 - [X] basic select 
 - [X] advanced select 
 - [X] aggregation
-- [ ] basic join 
-- [ ] advanced join
-- [ ] alternative queries
+- [X] basic join 
+- [X] advanced join
+- [X] alternative queries
